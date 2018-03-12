@@ -26,8 +26,7 @@ var paddle2 = {
   width: 10,
   length: 80
 }
-var gameoversound
-var pointsound, osc;
+var gameoversound, pointsound, osc;
 var borders = {
   leftx: 0,
   rightx: 0,
@@ -45,20 +44,16 @@ var keypress = {
 // the preload function is empty for now.  this is where you can load mp3 
 // sounds to play when the game state enters GAME OVER and POINT.  
 function preload() {
-  gameoversound = loadSound('ping pong sound.mp3');
 }
 
 function setup() {
   createCanvas(400, 400);
-  gameoversound.setVolume(0.1);
-  gameoversound.amp(0, 0.5);
   // i added some code here to initialize an oscillator!!!
-  /*osc = new p5.Oscillator();
+  osc = new p5.Oscillator();
   osc.setType('sine');
   osc.freq(240);
   osc.amp(0);
   osc.start();
-  */
 }
 
 // this mainloop contains the three functions that do everything that our program will do
@@ -85,11 +80,11 @@ function checkInput() {
   } else {
     keypress.s = false;
   }
-  if (keyIsDown(79)) {
-    keypress.o = true;
-    print('o')
-  } else {
-    keypress.o = false;
+  if (keyIsDown(79)) {    
+    keypress.o = true
+    print('o') 
+  } else {    
+    keypress.o = false;    
   }
   if (keyIsDown(76)) {
     keypress.l = true;
@@ -100,8 +95,11 @@ function checkInput() {
   if (keyIsDown(32)) {
     keypress.spacebar = true;
     print('SPACEBAR')
+    keypress.spacebar = true;    
+    osc.amp(4)
   } else {
     keypress.spacebar = false;
+    osc.amp(0);
   }
 }
 
@@ -121,17 +119,10 @@ function updateState() {
     initializePositions();
     if (keypress.spacebar == true) {
       GAMESTATE = 'PLAY';
-      
-    } else if (score.player1 == 5) {
-      GAMESTATE = 'GAMEOVER'
-    } else if (score.player2 == 5) {
-      GAMESTATE = 'GAMEOVER'
     }
   } else if (GAMESTATE == 'GAMEOVER') {
     if (keypress.spacebar == true) {
       GAMESTATE = 'START';
-      score.player1 = 0;
-      score.player2 = 0;
     }
   } else if (GAMESTATE == 'PLAY') {
     // move ball 
@@ -180,6 +171,12 @@ function updateState() {
       } else {
         score.player2 = score.player2 + 1;
         GAMESTATE = 'POINT';
+      }
+      if (score.player1 == 5) {
+        GAMESTATE = 'GAMEOVER'
+      }
+      if (score.player2 == 5) {
+        GAMESTATE = 'GAMEOVER'
       }
     }
   }
@@ -239,7 +236,6 @@ function drawStuff() {
     text('press SPACEBAR to continue', width / 2, height / 2);
   } else if (GAMESTATE == 'GAMEOVER') {
     // play gamesound 
-    gameoversound.play();
     // text GAME OVER and WINNER!
     textAlign(CENTER);
     text('GAMEOVER', width / 2, height / 2);
@@ -253,7 +249,7 @@ function drawStuff() {
 function initializePositions() {
   ball.x = width / 2;
   ball.y = height / 2;
-  ball.xvelocity = random(-3, 3); // probably should randomize this somehow
+  ball.xvelocity = random(-2, 2); // probably should randomize this somehow
   ball.yvelocity = random(-2, 2);
 
   borders.leftx = 50;
